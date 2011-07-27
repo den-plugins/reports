@@ -1,0 +1,70 @@
+<h2>Preset Filters</h2>
+
+<table width='100%'>
+  <tr>
+    <td width='25%' valign='top'>
+      <div>        
+        <ul>
+          <% @preset_filters.each do |k, v| %>
+            <li><%= link_to_remote k.to_s.humanize.titleize, :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_presets', :id => @project, :value => v} %></li>
+          <% end %>          
+        </ul>
+      </div>
+      <div>
+        <h3><%= link_to_function 'By Status', "Element.toggle('by-status')" %></h3>
+        <ul id='by-status' style='display:none;'>
+          <% @statuses.each do |status| %>
+            <li><%= link_to_remote status.name, :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_status', :id => @project, :value => status.id} %></li>
+            <%= render_progress_bar_by(@project, 'status', status.id) %>
+          <% end %>
+        </ul>
+      </div>
+      <div>
+        <h3><%= link_to_function 'By Priority', "Element.toggle('by-priority')" %></h3>
+        <ul id='by-priority' style='display:none'>          
+          <% @priorities.each do |prio| %>
+            <li><%= link_to_remote prio.name, :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_priority', :id => @project, :value => prio.id} %></li>
+            <%= render_progress_bar_by(@project, 'priority', prio.id) %>
+          <% end %>
+        </ul>
+      </div>
+      <div>
+        <h3><%= link_to_function 'By Assignee', "Element.toggle('by-assignee')" %></h3>
+        <ul id='by-assignee' style='display:none;'>          
+          <% @assignees.each do |assignee| %>
+            <li><%= link_to_remote assignee.name, :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_assignee', :id => @project, :value => assignee.id} %></li>
+            <%= render_progress_bar_by(@project, 'assigned_to', assignee.id) %>
+          <% end %>
+        </ul>
+      </div>
+      <div>
+        <h3><%= link_to_function 'By Version', "Element.toggle('by-version')" %></h3>
+        <ul id='by-version' style='display:none;'>          
+          <% @versions.each do |version| %>
+            <li><%= link_to_remote version.name, :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_version', :id => @project, :value => version.id} %></li>
+            <%= render_progress_bar_by(@project, 'fixed_version', version.id) %>
+          <% end %>
+            <li><%= link_to_remote 'Unversioned', :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_version', :id => @project, :value => 'null'} %></li>
+            <%= render_progress_bar_by(@project, 'fixed_version', -1) %>
+        </ul>
+      </div>
+      <div>
+        <h3><%= link_to_function 'By Category', "Element.toggle('by-category')" %></h3>
+        <ul id='by-category' style='display:none;'>          
+          <% @categories.each do |category| %>
+            <li><%= link_to_remote category.name, :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_category', :id => @project, :value => category.id} %></li>
+            <%= render_progress_bar_by(@project, 'category', category.id) %>
+          <% end %>
+          <li><%= link_to_remote 'Uncategorized', :update => 'content', :anchor => 'report-title', :url => {:controller => 'preset_filters', :action => 'by_category', :id => @project, :value => 'null'} %></li>
+          <%= render_progress_bar_by(@project, 'category', -1) %>
+        </ul>
+      </div>
+    </td>
+    <td valign="top">
+      <div id='reports-content'>
+        <%= render :partial => 'content', :locals => {:issues => @issues, :query => @query} %>
+      </div>
+    </td>
+  </tr>
+</table>
+

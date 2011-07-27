@@ -1,0 +1,20 @@
+<% if @project.module_enabled?('preset_filters_module') %>
+  <h3>Preset Filters</h3>
+  
+  <% status_res = render_side_bar_by(@project, 'status') %>
+  <% prio_res = render_side_bar_by(@project, 'priority') %>
+  <% assign_res = render_side_bar_by(@project, 'assigned_to') %>
+  
+  <p><b>Summary</b></p>
+  <%= status_res.nil? || status_res.empty? ? "--<br/>" : status_res %>
+  
+  <p><b>By Priority</b></p>
+  <%= prio_res.nil? || prio_res.empty? ? "--<br/>" : prio_res %>
+  
+  <p><b>By Assignee</b></p>
+  <%= assign_res.nil? || assign_res.empty? ? "--<br/>" : assign_res %>
+  
+  <% if User.current.allowed_to?(:enable_preset_filters, @project) %>
+    <p><%= link_to "View more filters", {:controller => "preset_filters", :action => "index", :id => @project} %></p>
+  <% end %>
+<% end %>

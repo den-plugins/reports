@@ -1,0 +1,25 @@
+<h3><a name='report-title'><%= @content_title -%></a></h3>
+
+<% if @issues && !@issues.empty? %>
+  <table class="list issues">
+    <thead>
+      <tr>        
+	<%= sort_header_tag("#{Issue.table_name}.id", :caption => '#', :default_order => 'desc') %>
+        <% query.columns.each do |column| %>
+          <%= column_header(column) %>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% issues.each do |issue| -%>
+	<tr id="issue-<%= issue.id %>" class="issue hascontextmenu <%= cycle('odd', 'even') %> <%= "status-#{issue.status.position} priority-#{issue.priority.position}" %>">	  
+	  <td><%= link_to issue.id, :controller => 'issues', :action => 'show', :id => issue %></td>
+          <% query.columns.each do |column| %><%= content_tag 'td', column_content(column, issue), :class => column.name %><% end %>
+	</tr>
+      <% end -%>
+    </tbody>
+  </table>
+  <p class="pagination"><%= pagination_links_full @issue_pages, @issue_count %></p>
+<% else %>
+  <p>No data to display</p>
+<% end %>
