@@ -19,5 +19,5 @@ Redmine::Plugin.register :presets do
     permission :enable_preset_filters, {:preset_filters => [:index, :by_presets, :by_status, :by_priority, :by_assignee, :by_version, :by_category]}
   end
 
-  menu :project_menu, :preset_filters, {:controller => 'preset_filters', :action => 'index'}
+  menu :project_menu, :preset_filters, {:controller => 'preset_filters', :action => 'index'}, :after => :repository
 end
